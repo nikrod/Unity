@@ -34,6 +34,8 @@ public class image : MonoBehaviour
 
         WWW WWW = new WWW("file://" + filePath);        
         this.GetComponent<RawImage>().texture = WWW.texture;
+        FileUtil.DeleteFileOrDirectory("C:/Users/Niko/Documents/prueba 2/Assets/nave.png"); // Nos aseguramos de que no exista el archivo!
+        FileUtil.CopyFileOrDirectory(filePath, "C:/Users/Niko/Documents/prueba 2/Assets/nave.png");
 
     }
 
