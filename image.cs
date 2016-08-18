@@ -12,23 +12,25 @@ public class image : MonoBehaviour
     //public RawImage imagen;
     private WWW WWW;
     private WWW WWW2;
-    public string noticia = "";
-    public string dropbox = "";
+    private string noticia = "";
+    private string dropbox = "";
     public string url = "";
     public string rutadropbox = "";
+    private string rutaimagen="";
 
 
     void Start()
     {
-        //imagen = GameObject.Find("RawImage").GetComponent<RawImage>(); para buscar un objeto remplazar "RawImage"
-        StartCoroutine("WaitForDownload", url);
+        //imagen = GameObject.Find("RawImage").GetComponent<RawImage>(); para buscar un objeto remplazar "RawImage"        
+        noticia = SceneManager.GetActiveScene().name; //obtenemos el nombre de la Escena!       
+        dropbox = rutadropbox + noticia + "/" + noticia + ".jpg";
+        StartCoroutine("WaitForDownload", dropbox); //llamamos a la rutina
         
     }
 
-    private IEnumerator WaitForDownload(string url)
+    private IEnumerator WaitForDownload(string url) //rutina para bajar un archivo y cargarlo en el objeto actual
     {
-        WWW = new WWW(url);
-        //while (!WWW.isDone) // D:
+        WWW = new WWW("file://" + url);
         yield return WWW;
         this.GetComponent<RawImage>().texture = WWW.texture;
     }
@@ -49,12 +51,12 @@ public class image : MonoBehaviour
     #endif
 
         WWW = new WWW("file://" + filePath);        
-        this.GetComponent<RawImage>().texture = WWW.texture;
-        noticia=SceneManager.GetActiveScene().name; //obtenemos el nombre de la Escena!       
-        dropbox = rutadropbox + noticia + "/"+ noticia+".jpg";
-        Debug.Log(noticia);
+        this.GetComponent<RawImage>().texture = WWW.texture;   
+        rutaimagen = "C:/Users/Niko/Documents/prueba 2/Assets/"+noticia+".jpg";
         FileUtil.DeleteFileOrDirectory(dropbox); // Nos aseguramos de que no exista el archivo!
-        FileUtil.CopyFileOrDirectory(filePath, dropbox);
+        FileUtil.DeleteFileOrDirectory(rutaimagen);
+        FileUtil.CopyFileOrDirectory(filePath,rutaimagen);    
+        FileUtil.CopyFileOrDirectory(filePath,dropbox);
 
     }
 
