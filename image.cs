@@ -10,12 +10,11 @@ public class image : MonoBehaviour
     // Use this for initialization
     public string filePath = "";
     //public RawImage imagen;
-    private WWW WWW;
-    private WWW WWW2;
-    private string noticia = "";
-    private string dropbox = "";
-    public string url = "";
-    public string rutadropbox = "";
+    private WWW WWW; //objeto declardo para guardar la imagen
+    private string noticia = "";//declarada para luego obtener el nombre de la escena
+    private string dropbox = ""; //se genera esta variable para generar la ruta de la carpeta que contiene esta noticia
+    public string url = ""; //variable declarada para obtener la url de una foto y cargarla al objeto
+    public string rutadropbox = "";//agregar la ruta de dropbox en unity! no olvidar
     private string rutaimagen="";
 
 
@@ -30,7 +29,7 @@ public class image : MonoBehaviour
 
     private IEnumerator WaitForDownload(string url) //rutina para bajar un archivo y cargarlo en el objeto actual
     {
-        WWW = new WWW("file://" + url);
+        WWW = new WWW("file://" + url);//remplazar ruta por el objeto url declardo al inicio en caso de querer cargar una foto de dropbox!
         yield return WWW;
         this.GetComponent<RawImage>().texture = WWW.texture;
     }
@@ -52,11 +51,11 @@ public class image : MonoBehaviour
 
         WWW = new WWW("file://" + filePath);        
         this.GetComponent<RawImage>().texture = WWW.texture;   
-        rutaimagen = "C:/Users/Niko/Documents/prueba 2/Assets/"+noticia+".jpg";
+        rutaimagen = "C:/Users/Niko/Documents/prueba 2/Assets/"+noticia+".jpg";//ruta donde se guardara la noticia
         FileUtil.DeleteFileOrDirectory(dropbox); // Nos aseguramos de que no exista el archivo!
-        FileUtil.DeleteFileOrDirectory(rutaimagen);
-        FileUtil.CopyFileOrDirectory(filePath,rutaimagen);    
-        FileUtil.CopyFileOrDirectory(filePath,dropbox);
+        FileUtil.DeleteFileOrDirectory(rutaimagen);//verificamos que no exista la fotografia!
+        FileUtil.CopyFileOrDirectory(filePath,rutaimagen);//se copia la imagen a la carpeta assets
+        FileUtil.CopyFileOrDirectory(filePath,dropbox);//se copia la imagen a dropbox
 
     }
 
