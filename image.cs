@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEditor;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class image : MonoBehaviour
 {
@@ -10,11 +11,26 @@ public class image : MonoBehaviour
     public string filePath = "";
     //public RawImage imagen;
     private WWW WWW;
+    private WWW WWW2;
+    public string noticia = "";
+    public string dropbox = "";
+    public string url = "";
+    public string rutadropbox = "";
 
 
     void Start()
     {
         //imagen = GameObject.Find("RawImage").GetComponent<RawImage>(); para buscar un objeto remplazar "RawImage"
+        StartCoroutine("WaitForDownload", url);
+        
+    }
+
+    private IEnumerator WaitForDownload(string url)
+    {
+        WWW = new WWW(url);
+        //while (!WWW.isDone) // D:
+        yield return WWW;
+        this.GetComponent<RawImage>().texture = WWW.texture;
     }
 
     // Update is called once per frame
@@ -32,10 +48,13 @@ public class image : MonoBehaviour
         , "jpg");
     #endif
 
-        WWW WWW = new WWW("file://" + filePath);        
+        WWW = new WWW("file://" + filePath);        
         this.GetComponent<RawImage>().texture = WWW.texture;
-        FileUtil.DeleteFileOrDirectory("C:/Users/Niko/Documents/prueba 2/Assets/nave.png"); // Nos aseguramos de que no exista el archivo!
-        FileUtil.CopyFileOrDirectory(filePath, "C:/Users/Niko/Documents/prueba 2/Assets/nave.png");
+        noticia=SceneManager.GetActiveScene().name; //obtenemos el nombre de la Escena!       
+        dropbox = rutadropbox + noticia + "/"+ noticia+".jpg";
+        Debug.Log(noticia);
+        FileUtil.DeleteFileOrDirectory(dropbox); // Nos aseguramos de que no exista el archivo!
+        FileUtil.CopyFileOrDirectory(filePath, dropbox);
 
     }
 
